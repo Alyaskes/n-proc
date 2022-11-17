@@ -1,4 +1,4 @@
-from matrix import matrix_read_from, matrix_write_to, compare
+from matrix import matrix_read_from, matrix_write_to, compare, MatrixType
 
 
 class Node:
@@ -50,7 +50,7 @@ def container_write_to(container, stream):
 
 def container_sort(container):
     if container.start_node is None:
-        print('Список пуст')
+        print('List is empty')
     else:
         n1 = container.start_node
         n2 = container.start_node
@@ -61,3 +61,13 @@ def container_sort(container):
                 n2 = n2.next
             n1 = n1.next
             n2 = container.start_node
+
+
+def container_write_two_dimensional_array_to(container, stream):
+    stream.write('Only two dimensional arrays\n')
+
+    n = container.start_node
+    while n is not None:
+        if n.data.key == MatrixType.two_dimensional_array:
+            matrix_write_to(n.data, stream)
+        n = n.next
