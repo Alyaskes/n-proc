@@ -27,8 +27,8 @@ def main():
 
     container_sort(cont)
     output_file = open(sys.argv[2], "w")
-    container_write_two_dimensional_array_to(cont, output_file)
-    # container_write_to(cont, output_file)
+    # container_write_two_dimensional_array_to(cont, output_file)
+    container_write_to(cont, output_file)
 
     container_clear(cont)
 

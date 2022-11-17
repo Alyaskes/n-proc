@@ -54,9 +54,36 @@ def diagonal_write_to(matrix, stream, size, out_type):
         stream.write('\tError matrix output type\n')
 
 
+def triangle_read_from(matrix, stream):
+    matrix.data = list(map(lambda x: int(x), stream.readline().rstrip('\n').split()))
+
+
+def triangle_write_to(matrix, stream, size, out_type):
+    if out_type == 1 or out_type == 2:
+        stream.write('\t\t')
+        index = 0
+        for i in range(size):
+            for j in range(size):
+                if j >= i:
+                    stream.write(str(matrix.data[index]) + ' ')
+                    index += 1
+                else:
+                    stream.write('0 ')
+            stream.write('\n\t\t')
+
+    elif out_type == 3:
+        stream.write('\t\t')
+        for i in range(size):
+            for j in range(size):
+                stream.write('{} '.format(matrix.data[i] if i == j else 0))
+    else:
+        stream.write('\tError matrix output type\n')
+
+
 class MatrixType(Enum):
     two_dimensional_array = 1
     diagonal = 2
+    triangle = 3
 
 
 class Matrix:
@@ -83,6 +110,10 @@ def matrix_read_from(stream, line):
         matrix.key = MatrixType.diagonal
         matrix.obj = Diagonal()
         diagonal_read_from(matrix.obj, stream)
+    elif k == 3:
+        matrix.key = MatrixType.triangle
+        matrix.obj = Triangle()
+        triangle_read_from(matrix.obj, stream)
     else:
         return 0
 
@@ -96,6 +127,9 @@ def matrix_write_to(matrix, stream):
     elif matrix.key == MatrixType.diagonal:
         stream.write(f'\tThis is diagonal matrix\n')
         diagonal_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
+    elif matrix.key == MatrixType.triangle:
+        stream.write('\tThis is triangle matrix\n')
+        triangle_write_to(matrix.obj, stream, matrix.size, matrix.out_type)
     else:
         stream.write('Error type\n')
 
@@ -126,3 +160,8 @@ class TwoDimArray:
 class Diagonal:
     def __init__(self):
         self.data = None
+
+
+class Triangle:
+    def __init__(self):
+        self.data = []
